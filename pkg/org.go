@@ -1,33 +1,31 @@
 package pkg
 
 import (
-	"strings"
 	"fmt"
-	"github.com/sanjid133/gopher-love/pkg/platform/github"
 	"github.com/sanjid133/gopher-love/pkg/platform"
+	"github.com/sanjid133/gopher-love/pkg/platform/github"
+	"strings"
 )
 
 type Org struct {
 	platform string
 	name     string
-	token string
+	token    string
 }
 
-
-
-func ValidateOrganization(token, org string) (Org, error)  {
+func ValidateOrganization(token, org string) (Org, error) {
 	orgs := strings.Split(org, "/")
-	if len(orgs) !=2 {
+	if len(orgs) != 2 {
 		return Org{}, fmt.Errorf("Org name %v is not valid. Correct format is github.com/<org>")
 	}
 	return Org{
 		platform: orgs[0],
 		name:     orgs[1],
-		token:token,
+		token:    token,
 	}, nil
 }
 
-func (o *Org) LoveOrganization() error  {
+func (o *Org) LoveOrganization() error {
 	var ml platform.MakeLove
 	var err error
 	switch o.platform {
@@ -35,7 +33,6 @@ func (o *Org) LoveOrganization() error  {
 		if ml, err = github.Initialize(o.token); err != nil {
 			return err
 		}
-		
 
 	}
 	return ml.LoveOrganization(o.name)

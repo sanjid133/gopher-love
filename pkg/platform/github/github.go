@@ -5,6 +5,7 @@ import (
 	"golang.org/x/oauth2"
 	. "github.com/sanjid133/gopher-love/pkg/platform"
 	"context"
+	"fmt"
 )
 
 const Platform  = "githubs"
@@ -40,8 +41,10 @@ func (l *Love) LoveOrganization(orgName string) error {
 	if err != nil {
 		return err
 	}
+
 	l.orgName = orgName
 	for _, repo := range repos {
+		fmt.Println(*repo.Name)
 		l.sendLove(repo)
 	}
 	return nil
@@ -54,6 +57,7 @@ func (l *Love) sendLove(repo *github.Repository)error  {
 	if err != nil {
 		return err
 	}
+
 	if !starred {
 		if _, err = l.client.Activity.Star(l.ctx, l.orgName, *repo.Name); err != nil {
 			return err
