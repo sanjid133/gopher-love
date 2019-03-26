@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/sanjid133/gopher-love/cmd"
+	"github.com/sanjid133/gopher-love/cmd/gopher"
 	"os"
 )
 
 func main() {
 	//
-	if err := cmd.RootCmd().Execute(); err != nil {
+	if err := gopher.RootCmd().Execute(); err != nil {
 		os.Exit(1)
 	}
 	os.Exit(0)
