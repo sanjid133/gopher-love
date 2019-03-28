@@ -1,11 +1,11 @@
 package pkg
 
 import (
-	"fmt"
-	"strings"
 	"context"
+	"fmt"
 	"github.com/sanjid133/gopher-love/pkg/system"
 	"github.com/sanjid133/gopher-love/util"
+	"strings"
 )
 
 func LoveOrganization(url string) error {
@@ -24,20 +24,20 @@ func LoveOrganization(url string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	repos, err := love.GetOrgRepos(parts[1])
 	if err != nil {
 		return err
 	}
-	
+
 	return LoveRepos(love, repos)
 }
 
-func LoveDependency(directory string)error  {
+func LoveDependency(directory string) error {
 	ctx := context.Background()
-	
+
 	dependencyType := DetectManager(ctx, directory)
-	
+
 	manager, err := GetManager(dependencyType, ctx)
 	if err != nil {
 		return err
@@ -64,9 +64,9 @@ func LoveDependency(directory string)error  {
 	return nil
 }
 
-func LoveRepos(love Love, repos []*Repository) error  {
+func LoveRepos(love Love, repos []*Repository) error {
 	for _, repo := range repos {
-		if err := love.SendLove(repo); err != nil{
+		if err := love.SendLove(repo); err != nil {
 			return err
 		}
 	}

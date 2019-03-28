@@ -5,7 +5,7 @@ test: install
 	go test -v
 
 fmt:
-	gofmt -w *.go */*.go
+	gofmt -s -w pkg cmd util
 
 tags:
 	find ./ -name '*.go' -print0 | xargs -0 gotags > TAGS

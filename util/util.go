@@ -1,15 +1,15 @@
 package util
 
 import (
+	"fmt"
+	"go/build"
+	"log"
 	"os"
 	"os/user"
-	"log"
-	"go/build"
-	"fmt"
 	"strings"
 )
 
-func GetPlatform(name string) string  {
+func GetPlatform(name string) string {
 	parts := strings.Split(name, ".")
 	return parts[0]
 }
@@ -21,12 +21,12 @@ func EnsureDirectory(directory string) error {
 func HomeDirectory() string {
 	usr, err := user.Current()
 	if err != nil {
-		log.Fatal( err )
+		log.Fatal(err)
 	}
 	return usr.HomeDir
 }
 
-func CheckGoDirectory()  {
+func CheckGoDirectory() {
 	gopath := os.Getenv("GOPATH")
 	if gopath == "" {
 		gopath = build.Default.GOPATH
