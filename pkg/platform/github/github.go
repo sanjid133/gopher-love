@@ -3,65 +3,70 @@ package github
 import (
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	. "github.com/sanjid133/gopher-love/pkg/platform"
+	. "github.com/sanjid133/gopher-love/pkg"
 	"context"
+	"github.com/sanjid133/gopher-love/pkg/system"
 	"fmt"
 )
 
-const Platform  = "githubs"
+const Platform  = "github"
 
-type Love struct {
+type Github struct {
 	ctx context.Context
 	client *github.Client
 
-	orgName string
-
 }
 
-var _ MakeLove = &Love{}
+var _ Love = &Github{}
 
-func Initialize(token string) (*Love, error) {
+func init() {
+	RegistarPlatform(Platform, func(ctx context.Context) (Love, error) { return New(ctx), nil })
+}
+
+func New(ctx context.Context) Love {
+	return &Github{ctx: ctx}
+
+}
+func (g *Github) Initialize(config *system.SecretConfig) (Love, error) {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
+		&oauth2.Token{AccessToken: config.Github.ApiToken},
 	)
 	tc := oauth2.NewClient(ctx, ts)
-
-	return &Love{
-		ctx:ctx,
-		client: github.NewClient(tc),
-	}, nil
-
-	// list all repositories for the authenticated user
-	//repos, _, err := client.Repositories.List(ctx, "", nil)
+	g.client = github.NewClient(tc)
+	return g, nil
 }
 
-func (l *Love) LoveOrganization(orgName string) error {
-	repos, _, err := l.client.Repositories.List(l.ctx, orgName, &github.RepositoryListOptions{})
+func (g *Github) GetOrgRepos(org string)([]*Repository, error) {
+	repos, _, err := g.client.Repositories.List(g.ctx, org, &github.RepositoryListOptions{})
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	l.orgName = orgName
+	retRepos := make([]*Repository, 0)
 	for _, repo := range repos {
-		fmt.Println(*repo.Name)
-		l.sendLove(repo)
+		retRepos = append(retRepos, &Repository{
+			Platform:Platform,
+			Owner: org,
+			Name: *repo.Name,
+		})
 	}
-	return nil
-
+	return retRepos, err
 }
 
-// If not starred a repository then star
-func (l *Love) sendLove(repo *github.Repository)error  {
-	starred, _, err := l.client.Activity.IsStarred(l.ctx, l.orgName, *repo.Name)
+func (g *Github) SendLove(repo *Repository) error  {
+	fmt.Println(repo.Platform, "=>", repo.Owner, "=>", repo.Name)
+	return nil
+	starred, _, err := g.client.Activity.IsStarred(g.ctx, repo.Owner, repo.Name)
 	if err != nil {
 		return err
 	}
 
 	if !starred {
-		if _, err = l.client.Activity.Star(l.ctx, l.orgName, *repo.Name); err != nil {
+		if _, err = g.client.Activity.Star(g.ctx, repo.Owner, repo.Name); err != nil {
 			return err
 		}
 	}
 	return nil
 }
+
+
