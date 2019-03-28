@@ -1,38 +1,38 @@
 package system
 
 import (
-	"github.com/sanjid133/gopher-love/util"
-	"os"
-	"io/ioutil"
 	"encoding/json"
 	"github.com/ghodss/yaml"
+	"github.com/sanjid133/gopher-love/util"
+	"io/ioutil"
+	"os"
 )
 
-const ConfigDir  = "/.gopher"
-const ConfigFile ="/.gopher/config.yaml"
+const ConfigDir = "/.gopher"
+const ConfigFile = "/.gopher/config.yaml"
 
 type SecretConfig struct {
-	Github struct{
+	Github struct {
 		ApiToken string `json:"api_token"`
 	} `json:"github"`
 
-	GitLab struct{
+	GitLab struct {
 		ApiKey string `json:"api_key"`
 	} `json:"gitlab"`
 }
 
 var Config *SecretConfig
 
-func Init()  {
-	util.EnsureDirectory(util.HomeDirectory()+ConfigDir)
+func Init() {
+	util.EnsureDirectory(util.HomeDirectory() + ConfigDir)
 	Config, _ = Initialize()
 }
 
 func Initialize() (*SecretConfig, error) {
 	config := &SecretConfig{}
 
-	if _, err :=  os.Stat(util.HomeDirectory()+ConfigFile); err == nil {
-		data, err := ioutil.ReadFile(util.HomeDirectory()+ConfigFile)
+	if _, err := os.Stat(util.HomeDirectory() + ConfigFile); err == nil {
+		data, err := ioutil.ReadFile(util.HomeDirectory() + ConfigFile)
 		if err != nil {
 			return nil, err
 		}

@@ -1,9 +1,9 @@
 package dep
 
 import (
-	"testing"
 	"fmt"
 	"os"
+	"testing"
 )
 
 func TestParse(t *testing.T) {
@@ -11,5 +11,3 @@ func TestParse(t *testing.T) {
 	//err := Parse("/home/sanjid/go/src/github.com/sanjid133/gopher-love/Gopkg.toml")
 	//fmt.Println(err)
 }
-
-

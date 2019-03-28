@@ -1,20 +1,18 @@
 package github
 
 import (
-	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
-	. "github.com/sanjid133/gopher-love/pkg"
 	"context"
+	"github.com/google/go-github/github"
+	. "github.com/sanjid133/gopher-love/pkg"
 	"github.com/sanjid133/gopher-love/pkg/system"
-	"fmt"
+	"golang.org/x/oauth2"
 )
 
-const Platform  = "github"
+const Platform = "github"
 
 type Github struct {
-	ctx context.Context
+	ctx    context.Context
 	client *github.Client
-
 }
 
 var _ Love = &Github{}
@@ -37,7 +35,7 @@ func (g *Github) Initialize(config *system.SecretConfig) (Love, error) {
 	return g, nil
 }
 
-func (g *Github) GetOrgRepos(org string)([]*Repository, error) {
+func (g *Github) GetOrgRepos(org string) ([]*Repository, error) {
 	repos, _, err := g.client.Repositories.List(g.ctx, org, &github.RepositoryListOptions{})
 	if err != nil {
 		return nil, err
@@ -45,17 +43,15 @@ func (g *Github) GetOrgRepos(org string)([]*Repository, error) {
 	retRepos := make([]*Repository, 0)
 	for _, repo := range repos {
 		retRepos = append(retRepos, &Repository{
-			Platform:Platform,
-			Owner: org,
-			Name: *repo.Name,
+			Platform: Platform,
+			Owner:    org,
+			Name:     *repo.Name,
 		})
 	}
 	return retRepos, err
 }
 
-func (g *Github) SendLove(repo *Repository) error  {
-	fmt.Println(repo.Platform, "=>", repo.Owner, "=>", repo.Name)
-	return nil
+func (g *Github) SendLove(repo *Repository) error {
 	starred, _, err := g.client.Activity.IsStarred(g.ctx, repo.Owner, repo.Name)
 	if err != nil {
 		return err
@@ -68,5 +64,3 @@ func (g *Github) SendLove(repo *Repository) error  {
 	}
 	return nil
 }
-
-

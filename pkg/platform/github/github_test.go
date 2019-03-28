@@ -1,13 +1,13 @@
 package github
 
 import (
-	"testing"
 	"fmt"
 	"os"
+	"testing"
 )
 
 func TestInitialize(t *testing.T) {
-	l,err := Initialize(os.Getenv("GITHUB_TOKEN"))
+	l, err := Initialize(os.Getenv("GITHUB_TOKEN"))
 	fmt.Println(err)
 	l.LoveOrganization("kubernetes")
 }

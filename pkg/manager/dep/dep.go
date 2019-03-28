@@ -1,9 +1,9 @@
 package dep
 
 import (
-	. "github.com/sanjid133/gopher-love/pkg"
 	"context"
 	"github.com/BurntSushi/toml"
+	. "github.com/sanjid133/gopher-love/pkg"
 	"github.com/sanjid133/gopher-love/util"
 	"path/filepath"
 	"strings"
@@ -15,7 +15,7 @@ const (
 )
 
 type Dep struct {
-	ctx context.Context
+	ctx       context.Context
 	directory string
 }
 
@@ -26,19 +26,19 @@ func init() {
 }
 
 func New(ctx context.Context) LoveBag {
-	return &Dep{ctx:ctx}
+	return &Dep{ctx: ctx}
 }
 
 type GopkgConfig struct {
 	Constraint []constraint `toml:"constraint"`
-	Prune prune `toml:"prune"`
+	Prune      prune        `toml:"prune"`
 }
 
 type constraint struct {
-	Name string
-	Source string `toml:"-"`
-	Branch string `toml:"-"`
-	Version string `toml:"-"`
+	Name      string
+	Source    string `toml:"-"`
+	Branch    string `toml:"-"`
+	Version   string `toml:"-"`
 	Revisions string `toml:"-"`
 }
 
@@ -50,11 +50,11 @@ func (d *Dep) Initialize(directory string) LoveBag {
 	return d
 }
 
-func (d *Dep) File()string {
+func (d *Dep) File() string {
 	return FileName
 }
 
-func (d *Dep) Read()([]*Repository, error) {
+func (d *Dep) Read() ([]*Repository, error) {
 	file := filepath.Join(d.directory, FileName)
 	var config GopkgConfig
 	_, err := toml.DecodeFile(file, &config)
@@ -65,13 +65,13 @@ func (d *Dep) Read()([]*Repository, error) {
 	for _, c := range config.Constraint {
 		repo := &Repository{}
 		parts := strings.Split(c.Name, "/")
-		if len(parts) >0 {
+		if len(parts) > 0 {
 			repo.Platform = util.GetPlatform(parts[0])
 		}
-		if len(parts)>1 {
+		if len(parts) > 1 {
 			repo.Owner = parts[1]
 		}
-		if len(parts)>2 {
+		if len(parts) > 2 {
 			repo.Name = parts[2]
 		}
 		repos = append(repos, repo)
