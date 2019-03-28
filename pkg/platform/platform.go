@@ -1,7 +1,5 @@
 package platform
 
-type MakeLove interface {
-	LoveOrganization(orgName string) error
-}
-
-
+import (
+	_ "github.com/sanjid133/gopher-love/pkg/platform/github"
+)

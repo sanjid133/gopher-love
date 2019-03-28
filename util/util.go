@@ -1,25 +1,35 @@
 package util
 
-import "strings"
+import (
+	"os"
+	"os/user"
+	"log"
+	"go/build"
+	"fmt"
+	"strings"
+)
 
-type Repo struct {
-	Platform string
-	Owner string
-	Name string
+func GetPlatform(name string) string  {
+	parts := strings.Split(name, ".")
+	return parts[0]
 }
 
+func EnsureDirectory(directory string) error {
+	return os.MkdirAll(directory, 0777)
+}
 
-func ParseRepoUrl(url string) Repo {
-	parts := strings.Split(url, "/")
-	r := Repo{}
-	if len(parts) >0 {
-		r.Platform = parts[0]
+func HomeDirectory() string {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal( err )
 	}
-	if len(parts)>1 {
-		r.Owner = parts[1]
+	return usr.HomeDir
+}
+
+func CheckGoDirectory()  {
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		gopath = build.Default.GOPATH
 	}
-	if len(parts)>2 {
-		r.Name = parts[2]
-	}
-	return r
+	fmt.Println(gopath)
 }
