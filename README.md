@@ -5,7 +5,7 @@ Send love to all your fellow go library by giving Github  *
 
 To install run:
 ```console
-go get github.com/sanjid133/gopher-love
+go get github.com/sanjid133/gopher-love/...
 
 ```
 ### Configurtion
