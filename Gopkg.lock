@@ -58,6 +58,14 @@
   revision = "95032a82bc518f77982ea72343cc1ade730072f0"
 
 [[projects]]
+  digest = "1:ea7929b5ce35b109685e5c992ddf64d5b977cd915b2c050fc340d7d645c87418"
+  name = "github.com/kyokomi/emoji"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "eba9a9d7bfd64dcfe6e90fb3d53b2f3357a015c3"
+  version = "v2.1.0"
+
+[[projects]]
   digest = "1:2fa7b0155cd54479a755c629de26f888a918e13f8857a2c442205d825368e084"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
@@ -170,6 +178,7 @@
     "github.com/BurntSushi/toml",
     "github.com/ghodss/yaml",
     "github.com/google/go-github/github",
+    "github.com/kyokomi/emoji",
     "github.com/spf13/cobra",
     "golang.org/x/oauth2",
     "gopkg.in/AlecAivazis/survey.v1",

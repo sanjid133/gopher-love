@@ -63,7 +63,9 @@ func (d *Dep) Read() ([]*Repository, error) {
 	}
 	repos := make([]*Repository, 0)
 	for _, c := range config.Constraint {
-		repo := &Repository{}
+		repo := &Repository{
+			Url: c.Name,
+		}
 		parts := strings.Split(c.Name, "/")
 		if len(parts) > 0 {
 			repo.Platform = util.GetPlatform(parts[0])

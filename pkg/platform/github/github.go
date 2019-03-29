@@ -46,21 +46,24 @@ func (g *Github) GetOrgRepos(org string) ([]*Repository, error) {
 			Platform: Platform,
 			Owner:    org,
 			Name:     *repo.Name,
+			Url:      *repo.URL,
 		})
 	}
 	return retRepos, err
 }
 
-func (g *Github) SendLove(repo *Repository) error {
+func (g *Github) IsLoved(repo *Repository) (bool, error) {
 	starred, _, err := g.client.Activity.IsStarred(g.ctx, repo.Owner, repo.Name)
 	if err != nil {
+		return false, err
+	}
+	return starred, nil
+}
+
+func (g *Github) SendLove(repo *Repository) error {
+	if _, err := g.client.Activity.Star(g.ctx, repo.Owner, repo.Name); err != nil {
 		return err
 	}
 
-	if !starred {
-		if _, err = g.client.Activity.Star(g.ctx, repo.Owner, repo.Name); err != nil {
-			return err
-		}
-	}
 	return nil
 }

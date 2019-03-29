@@ -3,8 +3,10 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"github.com/kyokomi/emoji"
 	"github.com/sanjid133/gopher-love/pkg/system"
 	"github.com/sanjid133/gopher-love/util"
+	"math/rand"
 	"strings"
 )
 
@@ -66,8 +68,15 @@ func LoveDependency(directory string) error {
 
 func LoveRepos(love Love, repos []*Repository) error {
 	for _, repo := range repos {
-		if err := love.SendLove(repo); err != nil {
+		isLoved, err := love.IsLoved(repo)
+		if err != nil {
 			return err
+		}
+		if !isLoved {
+			emoji.Println(fmt.Sprintf("%v %v", repo.Url, reaction[rand.Intn(len(reaction)-1)]))
+			if err := love.SendLove(repo); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

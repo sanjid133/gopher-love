@@ -15,3 +15,18 @@ To config run following command
 ```console
 $ gopher config
 ```
+
+
+## Love
+
+To love all the repository of a user or organization, run:
+
+```console
+$ gopher love -o github.com/<org/user name>
+```
+
+To love current dependency, run
+
+```console
+$ gopher love
+```
