@@ -1,12 +1,11 @@
 package glide
 
 import (
-	"path/filepath"
-	"github.com/BurntSushi/toml"
-	"strings"
-	"github.com/sanjid133/gopher-love/util"
-	. "github.com/sanjid133/gopher-love/pkg"
 	"context"
+	. "github.com/sanjid133/gopher-love/pkg"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"path/filepath"
 )
 
 const (
@@ -30,8 +29,10 @@ func New(ctx context.Context) LoveBag {
 }
 
 type GlideFile struct {
-	Import []struct {
+	Package string `yaml:"package"`
+	Import  []struct {
 		Package string `yaml:"package"`
+		Repo    string `yaml:"repo,omitempty"`
 	} `yaml:"import"`
 }
 
@@ -46,29 +47,19 @@ func (d *Glide) File() string {
 
 func (d *Glide) Read() ([]*Repository, error) {
 	file := filepath.Join(d.directory, FileName)
-	var config GopkgConfig
-	_, err := toml.DecodeFile(file, &config)
+	data, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, err
 	}
+	config := &GlideFile{}
+	if err = yaml.Unmarshal(data, config); err != nil {
+		return nil, err
+	}
 	repos := make([]*Repository, 0)
-	for _, c := range config.Constraint {
-		repo := &Repository{
-			Url: c.Name,
-		}
-		parts := strings.Split(c.Name, "/")
-		if len(parts) > 0 {
-			repo.Platform = util.GetPlatform(parts[0])
-		}
-		if len(parts) > 1 {
-			repo.Owner = parts[1]
-		}
-		if len(parts) > 2 {
-			repo.Name = parts[2]
-		}
+	for _, c := range config.Import {
+		repo := UrlToRepo(c.Package)
 		repos = append(repos, repo)
 
 	}
 	return repos, nil
 }
-
