@@ -4,9 +4,7 @@ import (
 	"context"
 	"github.com/BurntSushi/toml"
 	. "github.com/sanjid133/gopher-love/pkg"
-	"github.com/sanjid133/gopher-love/util"
 	"path/filepath"
-	"strings"
 )
 
 const (
@@ -63,19 +61,7 @@ func (d *Dep) Read() ([]*Repository, error) {
 	}
 	repos := make([]*Repository, 0)
 	for _, c := range config.Constraint {
-		repo := &Repository{
-			Url: c.Name,
-		}
-		parts := strings.Split(c.Name, "/")
-		if len(parts) > 0 {
-			repo.Platform = util.GetPlatform(parts[0])
-		}
-		if len(parts) > 1 {
-			repo.Owner = parts[1]
-		}
-		if len(parts) > 2 {
-			repo.Name = parts[2]
-		}
+		repo := UrlToRepo(c.Name)
 		repos = append(repos, repo)
 
 	}

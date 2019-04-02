@@ -3,8 +3,10 @@ package pkg
 import (
 	"context"
 	"github.com/sanjid133/gopher-love/pkg/system"
+	"github.com/sanjid133/gopher-love/util"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Love interface {
@@ -38,6 +40,23 @@ func DetectManager(ctx context.Context, directory string) string {
 		}
 	}
 	return ""
+}
+
+func UrlToRepo(url string) *Repository {
+	repo := &Repository{
+		Url: url,
+	}
+	parts := strings.Split(url, "/")
+	if len(parts) > 0 {
+		repo.Platform = util.GetPlatform(parts[0])
+	}
+	if len(parts) > 1 {
+		repo.Owner = parts[1]
+	}
+	if len(parts) > 2 {
+		repo.Name = parts[2]
+	}
+	return repo
 }
 
 var reaction = []string{
