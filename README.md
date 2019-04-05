@@ -19,14 +19,27 @@ $ gopher config
 
 ## Love
 
-To love all the repository of a user or organization, run:
+- To love all the repository of a user or organization, run:
 
-```console
-$ gopher love -o github.com/<org/user name>
-```
+    ```console
+    $ gopher love -o github.com/<org/user name>
+    ```
 
-To love current dependency, run
+- To love all the repository of a list of users or organizations:
 
-```console
-$ gopher love
-```
+    - Create a text file containing the link of the users or organizations as below:
+        ```
+        github.com/kubernetes
+        github.com/golang
+        github.com/sanjid133
+        ``` 
+    - Then run:
+        ```console
+        $ gopher love -f <path-of-the-created-file>
+        ```
+
+- To love current dependency, run
+
+    ```console
+    $ gopher love
+    ```
