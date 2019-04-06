@@ -29,6 +29,9 @@ type Repository struct {
 	Name     string
 
 	Url string
+
+	HasMirror bool
+	MirrorUrl string
 }
 
 func DetectManager(ctx context.Context, directory string) string {
@@ -43,6 +46,7 @@ func DetectManager(ctx context.Context, directory string) string {
 }
 
 func UrlToRepo(url string) *Repository {
+	url = strings.TrimPrefix(url, "https://")
 	repo := &Repository{
 		Url: url,
 	}

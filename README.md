@@ -7,14 +7,18 @@ To install run:
 ```console
 go get github.com/sanjid133/gopher-love/...
 
+$ gopher -help
 ```
-### Configurtion
+
+### Configuration
 
 To config run following command
 
 ```console
 $ gopher config
 ```
+
+To generate [github](github.com) token follow [this](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
 
 
 ## Love
@@ -43,3 +47,14 @@ $ gopher config
     ```console
     $ gopher love
     ```
+
+## Supported Dependency
+
+ - [Dep](https://golang.github.io/dep/docs/introduction.html)
+ - [Glide](https://github.com/Masterminds/glide)
+ 
+## Supported Platform
+
+ - [Github](github.com)
+  
+
