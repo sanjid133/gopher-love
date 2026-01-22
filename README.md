@@ -47,6 +47,26 @@ To generate [github](github.com) token follow [this](https://help.github.com/en/
     ```console
     $ gopher love
     ```
+## Follow
+- To know about `gopher follow` run:
+    ```console
+    $ gopher follow --help
+    ```
+- To follow a single user, run:
+    ```console
+    $ gopher follow -o github.com/<user name>
+    ```
+- To follow users from a list of users
+   - Create a text file containing the list of users as follows:
+        ```console
+        github.com/sanjid133
+        github.com/masudur-rahman
+        github.com/faem
+        ```
+    - Then run:
+        ```console
+        $ gopher follow -f <path-of-the-created-file>
+        ```
 
 ## Supported Dependency
 
