@@ -2,11 +2,12 @@ package pkg
 
 import (
 	"context"
-	"github.com/sanjid133/gopher-love/pkg/system"
-	"github.com/sanjid133/gopher-love/util"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/sanjid133/gopher-love/pkg/system"
+	"github.com/sanjid133/gopher-love/util"
 )
 
 type Love interface {
@@ -15,6 +16,9 @@ type Love interface {
 	GetOrgRepos(org string) ([]*Repository, error)
 	IsLoved(repo *Repository) (bool, error)
 	SendLove(repo *Repository) error
+
+	IsFollowed(user string) (bool, error)
+	SendFollow(user string) error
 }
 
 type LoveBag interface {

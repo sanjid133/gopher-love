@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+
 	"github.com/google/go-github/github"
 	. "github.com/sanjid133/gopher-love/pkg"
 	"github.com/sanjid133/gopher-love/pkg/system"
@@ -66,4 +67,37 @@ func (g *Github) SendLove(repo *Repository) error {
 	}
 
 	return nil
+}
+
+func (g *Github) IsFollowed(target string) (bool, error) {
+	currentUser, err := g.GetCurrentUsername()
+	if err != nil {
+		return false, err
+	}
+	followed, _, err := g.client.Users.IsFollowing(g.ctx, currentUser, target)
+	if err != nil {
+		return false, err
+	}
+	return followed, nil
+}
+func (g *Github) SendFollow(user string) error {
+	if _, err := g.client.Users.Follow(g.ctx, user); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *Github) GetCurrentUsername() (string, error) {
+	req, err := g.client.NewRequest("GET", "user", nil)
+	if err != nil {
+		return "", err
+	}
+
+	user := new(github.User)
+	_, err = g.client.Do(g.ctx, req, user)
+	if err != nil {
+		return "", err
+	}
+
+	return *user.Login, nil
 }
